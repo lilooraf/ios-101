@@ -12,9 +12,13 @@ class APIHandlingTests: XCTestCase {
     lazy var apiHandler = APIHandler(networkManager: networkManager)
 
     func testShouldCallNetworkingManagerWhenFetchShopCalled() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-
-        // TODO: Assert
+        apiHandler.fetchShop { res in
+            switch res {
+                case .success(let shop):
+                    XCTAssertNotNil(shop, "Success")
+                case .failure(let error):
+                    XCTFail("Unexpected error \(error)")
+                }
+        }
     }
 }
