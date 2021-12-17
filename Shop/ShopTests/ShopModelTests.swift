@@ -24,36 +24,22 @@ class ShopModelTests: XCTestCase {
             XCTFail()
             return
         }
-       
+
         do {
-            // Get data from ressource
             let data = try Data(contentsOf: resource)
             let jsonDecoder = JSONDecoder()
-            
-            // Parse Data
             let dataFromJson = try jsonDecoder.decode(Shop.self, from: data)
             
-            // Verify company name
             XCTAssert(dataFromJson.company_name == "Savon de France", "company name is incorrect")
-            
-            // Verify the number of products
             XCTAssert(dataFromJson.products.count == 8, "the number of product isn't correct")
-            
-            // Verify values of first element
             XCTAssert(dataFromJson.products.first?.id == "aloe-vera-bar", "first product id incorrect")
             XCTAssert(dataFromJson.products.first?.name == "Aloe Vera Bar", "first product name incorrect")
             XCTAssert(dataFromJson.products.first?.image == "aloe-vera-bar", "first product image incorrect")
             XCTAssert(dataFromJson.products.first?.price_cents == 550, "first product price incorrect")
             XCTAssert(dataFromJson.products.first?.currency == "USD", "first product currency id incorrect")
-            
         } catch {
-            XCTFail("cannot get data from \(resource)")
+            XCTFail("Error data")
         }
-        
-        // Get data from resource
-        // Parse it
-        // Asserts: Verify the company name, the number of products, values of the first element.
-        // TODO: Assert
     }
 
     func testMalformedDataDecodingFromJSONFileShouldParseWithFailure() throws {
@@ -65,19 +51,11 @@ class ShopModelTests: XCTestCase {
         }
         
         do {
-            // Get data from ressource
             let data = try Data(contentsOf: resource)
             let jsonDecoder = JSONDecoder()
-            
-            // Parse Data
             _ = try jsonDecoder.decode(Shop.self, from: data)
-            
         } catch {
-            XCTAssert(true, "malformed data parse returned nil")
+            XCTAssert(true)
         }
-        // Get data from resource
-        // Parse it
-        // Verify that decoding is failing and returning nil
-        // TODO: Assert
     }
 }
