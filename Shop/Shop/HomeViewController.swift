@@ -38,7 +38,7 @@ class HomeViewController: UIViewController {
         super.viewWillAppear(animated)
 
         // TODO: Set title as the company name
-        title = "Shop" // Update this value
+        title = self.shop?.company_name
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -52,7 +52,7 @@ extension HomeViewController: HomePresenterView {
     func apply(shop: Shop) {
         self.shop = shop
         // TODO: Set title as the company name
-        title = "Shop" // Update this value
+        title = shop.company_name
 
         mainView.update()
     }
@@ -79,8 +79,8 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         }
 
         // TODO: Get product at index
-
-        let product: Product = .init()
+                
+        let product: Product = shop.products[indexPath.row]
 
         cell.apply(product: product)
         return cell
@@ -94,6 +94,9 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
 
         // TODO: Get product tapped
         // TODO: Navigate to detail view controller
+        
+        let productTaped = shop.products[indexPath.row]
+        navigationController?.pushViewController(DetailViewController(dependencies: dependencies, product: productTaped), animated: true)
     }
 }
 
