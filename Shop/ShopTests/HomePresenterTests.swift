@@ -13,8 +13,7 @@ class HomePresenterTests: XCTestCase {
     lazy var presenter = DefaultHomePresenter(apiHandler: apiHandler)
     var view = MockHomeViewController()
     var apiHandler = MockAPIHandler()
-    var product = Product(id: "test", name: "Soap", currency: "USD", priceCents: 550, image: "test")
-
+    var product = Product(id: "test", name: "Soap", image: "image", price_cents: 550, currency: "USD")
     override func setUpWithError() throws {
         presenter.view = view
     }
