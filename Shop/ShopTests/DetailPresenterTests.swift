@@ -24,28 +24,29 @@ class DetailPresenterTests: XCTestCase {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
 
-        // TODO: Assert
+        XCTAssert(view.applyCallCount != 0)
     }
 
     func testViewDidLoad_checkCacheForQuantity() throws {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
 
-        // TODO: Assert
+        //STILL TODO
+        XCTAssert(view.applyCallCount != 0)
     }
 
     func testDidTapAddButton_callSaveCacheManager() throws {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
 
-        // TODO: Assert
+        XCTAssert(cacheManager.saveCallCount > 0)
     }
 
     func testDidTapAddButton_applyProductAndQuantity() throws {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
 
-        // TODO: Assert
+        XCTAssert(view.applyCallCount > 0 && view.applyQuantity > 0)
     }
 
     func testDidTapRemoveButton_callSaveCacheManager() throws {
@@ -53,6 +54,7 @@ class DetailPresenterTests: XCTestCase {
         // Use XCTAssert and related functions to verify your tests produce the correct results.
 
         // Assert
+        //XCTAssert(view. > 0 && view.applyQuantity > 0)
     }
 
     func testDidTapRemoveButton_applyProductAndQuantity() throws {

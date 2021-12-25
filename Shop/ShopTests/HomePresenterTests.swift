@@ -22,7 +22,7 @@ class HomePresenterTests: XCTestCase {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
 
-        // TODO: Assert
+        XCTAssert(view.applyCallCount > 0 || view.displayErrorCallCount > 0)
     }
 
     func testViewDidLoadCallAPIHandler_withSuccessResult() throws {
@@ -39,7 +39,7 @@ class HomePresenterTests: XCTestCase {
 
         waitForExpectations(timeout: 2, handler: nil)
 
-        // TODO: Assert
+        XCTAssert(view.applyCallCount > 0)
     }
 
     func testViewDidLoadCallAPIHandler_withFailureNoDataResult() throws {
@@ -56,7 +56,7 @@ class HomePresenterTests: XCTestCase {
 
         waitForExpectations(timeout: 2, handler: nil)
 
-        // TODO: Assert
+        XCTAssert(view.displayErrorCallCount > 0 && view.displayErrorMessage == "No data received")
     }
 
     func testViewDidLoadCallAPIHandler_withFailureMalformedDataResult() throws {
@@ -73,7 +73,7 @@ class HomePresenterTests: XCTestCase {
 
         waitForExpectations(timeout: 2, handler: nil)
 
-        // TODO: Assert
+        XCTAssert(view.displayErrorCallCount > 0 && view.displayErrorMessage == "Malformed data")
     }
 
     func testViewDidLoadCallAPIHandler_withFailureErrorResult() throws {
@@ -81,13 +81,13 @@ class HomePresenterTests: XCTestCase {
         // Use XCTAssert and related functions to verify your tests produce the correct results.
         let queue = DispatchQueue.main
         let expectation = expectation(description: "testViewDidLoadCallAPIHandler_withFailureErrorResult")
-        // let result: Result<Shop, NetworkError> = ...
+        //let result: Result<Shop, NetworkError> = 
 
         queue.asyncAfter(deadline: .now() + 0.2) {
             expectation.fulfill()
         }
         waitForExpectations(timeout: 2, handler: nil)
 
-        // TODO: Assert
+        XCTAssert(view.displayErrorCallCount > 0 && view.displayErrorMessage != "Malformed data" && view.displayErrorMessage == "No data received")
     }
 }

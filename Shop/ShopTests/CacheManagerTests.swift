@@ -12,15 +12,19 @@ class CacheManagerTests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
-
+        cacheManager.save(0, forKey: "Soap")
         // Don't forget to delete / rewrite your data on the specific test key each time you run a test to avoid false negatives
     }
 
     func testSaveMockSuccessful() throws {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
-
-        // TODO: Assert
+        var product = Product(id: "test", name: "Soap", image: "image", price_cents: 550, currency: "USD")
+        var quantity = cacheManager.value(forKey: product.name, type: Int.self) ?? 0
+        
+        quantity += 1
+        cacheManager.save(quantity, forKey: product.name)
+        XCTAssert(cacheManager.value(forKey: product.name, type: Int.self) == 1)
     }
 
     func testGetMockFailure() throws {
