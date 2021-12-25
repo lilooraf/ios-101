@@ -14,6 +14,7 @@ class HomePresenterTests: XCTestCase {
     var view = MockHomeViewController()
     var apiHandler = MockAPIHandler()
     var product = Product(id: "test", name: "Soap", image: "image", price_cents: 550, currency: "USD")
+    var shop = Shop(company_name: "company", products: [])
     override func setUpWithError() throws {
         presenter.view = view
     }
@@ -32,6 +33,8 @@ class HomePresenterTests: XCTestCase {
         let expectation = expectation(description: "testViewDidLoadCallAPIHandler_withSuccessResult")
 
         // let result: Result<Shop, NetworkError> = ...
+        view.apply(shop: self.shop)
+        
 
         queue.asyncAfter(deadline: .now() + 0.2) {
             expectation.fulfill()
@@ -48,12 +51,11 @@ class HomePresenterTests: XCTestCase {
         let queue = DispatchQueue.main
         let expectation = expectation(description: "testViewDidLoadCallAPIHandler_withFailureNoDataResult")
 
-        // let result: Result<Shop, NetworkError> = .failure(.noData)
+        let result: Result<Shop, NetworkError> = .failure(.noData)
 
         queue.asyncAfter(deadline: .now() + 0.2) {
             expectation.fulfill()
         }
-
         waitForExpectations(timeout: 2, handler: nil)
 
         XCTAssert(view.displayErrorCallCount > 0 && view.displayErrorMessage == "No data received")
@@ -81,7 +83,7 @@ class HomePresenterTests: XCTestCase {
         // Use XCTAssert and related functions to verify your tests produce the correct results.
         let queue = DispatchQueue.main
         let expectation = expectation(description: "testViewDidLoadCallAPIHandler_withFailureErrorResult")
-        //let result: Result<Shop, NetworkError> = 
+        //let result: Result<Shop, NetworkError> =
 
         queue.asyncAfter(deadline: .now() + 0.2) {
             expectation.fulfill()
