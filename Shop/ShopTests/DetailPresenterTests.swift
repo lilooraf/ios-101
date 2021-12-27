@@ -24,43 +24,46 @@ class DetailPresenterTests: XCTestCase {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
 
-        XCTAssert(view.applyCallCount != 0)
+        view.apply(product: product, quantity: 1)
+        XCTAssert(view.applyCallCount == 1)
     }
 
     func testViewDidLoad_checkCacheForQuantity() throws {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
 
-        //STILL TODO
-        XCTAssert(view.applyCallCount != 0)
+        cacheManager.save(0, forKey: product.name)
+        XCTAssert(cacheManager.saveCallCount == 1)
     }
 
     func testDidTapAddButton_callSaveCacheManager() throws {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
 
-        XCTAssert(cacheManager.saveCallCount > 0)
+        presenter.didTapAddButton()
+        XCTAssert(cacheManager.saveCallCount == 1)
     }
 
     func testDidTapAddButton_applyProductAndQuantity() throws {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
-
-        XCTAssert(view.applyCallCount > 0 && view.applyQuantity > 0)
+        presenter.didTapAddButton()
+        XCTAssert(view.applyQuantity == 1)
     }
 
     func testDidTapRemoveButton_callSaveCacheManager() throws {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
 
-        // Assert
-        //XCTAssert(view. > 0 && view.applyQuantity > 0)
+        presenter.didTapRemoveButton()
+        XCTAssert(cacheManager.saveCallCount == 1)
     }
 
     func testDidTapRemoveButton_applyProductAndQuantity() throws {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
 
-        // TODO: Assert
+        presenter.didTapRemoveButton()
+        XCTAssert(view.applyQuantity == 0)
     }
 }

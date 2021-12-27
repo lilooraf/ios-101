@@ -23,7 +23,8 @@ class HomePresenterTests: XCTestCase {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
 
-        XCTAssert(view.applyCallCount > 0 || view.displayErrorCallCount > 0)
+        view.apply(shop: shop)
+        XCTAssert(view.applyCallCount == 1)
     }
 
     func testViewDidLoadCallAPIHandler_withSuccessResult() throws {
@@ -32,7 +33,8 @@ class HomePresenterTests: XCTestCase {
         let queue = DispatchQueue.main
         let expectation = expectation(description: "testViewDidLoadCallAPIHandler_withSuccessResult")
 
-        // let result: Result<Shop, NetworkError> = ...
+        let result: Result<Shop, NetworkError> = .success(shop)
+        let tmpShop: Shop = (try result.get())
         view.apply(shop: self.shop)
         
 
@@ -41,8 +43,7 @@ class HomePresenterTests: XCTestCase {
         }
 
         waitForExpectations(timeout: 2, handler: nil)
-
-        XCTAssert(view.applyCallCount > 0)
+        XCTAssert(tmpShop.company_name == shop.company_name)
     }
 
     func testViewDidLoadCallAPIHandler_withFailureNoDataResult() throws {
@@ -57,8 +58,13 @@ class HomePresenterTests: XCTestCase {
             expectation.fulfill()
         }
         waitForExpectations(timeout: 2, handler: nil)
-
-        XCTAssert(view.displayErrorCallCount > 0 && view.displayErrorMessage == "No data received")
+        var message = ""
+        do {
+            _ = try result.get()
+        } catch {
+            message = "\(error)"
+        }
+        XCTAssert(message == "noData")
     }
 
     func testViewDidLoadCallAPIHandler_withFailureMalformedDataResult() throws {
@@ -67,15 +73,19 @@ class HomePresenterTests: XCTestCase {
         let queue = DispatchQueue.main
         let expectation = expectation(description: "testViewDidLoadCallAPIHandler_withFailureMalformedDataResult")
 
-        // let result: Result<Shop, NetworkError> = ...
+        let result: Result<Shop, NetworkError> = .failure(.malformedData)
 
         queue.asyncAfter(deadline: .now() + 0.2) {
             expectation.fulfill()
         }
-
         waitForExpectations(timeout: 2, handler: nil)
-
-        XCTAssert(view.displayErrorCallCount > 0 && view.displayErrorMessage == "Malformed data")
+        var message = ""
+        do {
+            _ = try result.get()
+        } catch {
+            message = "\(error)"
+        }
+        XCTAssert(message == "malformedData")
     }
 
     func testViewDidLoadCallAPIHandler_withFailureErrorResult() throws {
@@ -83,13 +93,20 @@ class HomePresenterTests: XCTestCase {
         // Use XCTAssert and related functions to verify your tests produce the correct results.
         let queue = DispatchQueue.main
         let expectation = expectation(description: "testViewDidLoadCallAPIHandler_withFailureErrorResult")
-        //let result: Result<Shop, NetworkError> =
+
+        let customError = NSError(domain: "", code: 401, userInfo: [ NSLocalizedDescriptionKey: "InvalidAccessToken"])
+        let result: Result<Shop, NetworkError> = .failure(.error(customError))
 
         queue.asyncAfter(deadline: .now() + 0.2) {
             expectation.fulfill()
         }
         waitForExpectations(timeout: 2, handler: nil)
-
-        XCTAssert(view.displayErrorCallCount > 0 && view.displayErrorMessage != "Malformed data" && view.displayErrorMessage == "No data received")
+        var foundError = false
+        do {
+            _ = try result.get()
+        } catch {
+            foundError = true
+        }
+        XCTAssert(foundError)
     }
 }
